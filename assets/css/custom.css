@@ -1,0 +1,93 @@
+/* 复刻页面补充样式：Toast、轮播交互态 */
+
+/* ---- 轮播轨道：由 JS 用 transform 驱动（与原站 embla 相同方式） ---- */
+[data-track] {
+  will-change: transform;
+}
+/* 原站 embla 会给卡片加 translate3d，使卡片进入独立合成层（文字抗锯齿方式随之改变） */
+[data-track] > [role="group"] {
+  transform: translate3d(0, 0, 0);
+}
+[data-track].is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* ---- Toast（对齐原站 sonner 默认浅色样式） ---- */
+.toast-host {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  z-index: 999999999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+}
+.toast {
+  box-sizing: border-box;
+  width: 356px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #ededed;
+  border-radius: 8px;
+  color: #171717;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-size: 13px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -4px rgba(0, 0, 0, .1);
+  opacity: 0;
+  transform: translateY(100%);
+  transition: transform .4s, opacity .4s;
+  pointer-events: auto;
+}
+.toast.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast .toast-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: 16px;
+  width: 16px;
+}
+.toast .toast-icon svg {
+  height: 20px;
+  width: 20px;
+}
+.toast .toast-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.toast .toast-title {
+  font-weight: 500;
+  line-height: 1.5;
+}
+@media (max-width: 600px) {
+  .toast-host {
+    right: 16px;
+    left: 16px;
+    bottom: 16px;
+  }
+  .toast {
+    width: 100%;
+  }
+}
+
+/* ---- 原站按视口条件渲染的移动端提示：桌面端隐藏 ---- */
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none;
+  }
+}
+
+/* ---- 无障碍：尊重系统降低动效偏好 ---- */
+@media (prefers-reduced-motion: reduce) {
+  [data-track] {
+    transition: none !important;
+  }
+}
